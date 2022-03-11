@@ -1,9 +1,10 @@
 # Checkers
  
 Checkers, also called draughts, board game, one of the world's oldest games. Checkers is played by two persons who oppose each other across a board of 64 light and dark squares, the same as a chessboard.
+
 Written with:
-HTML
-CSS
-JavaScript
-Jquery
-![Alt text](Pictures\Checkers.png?raw=true "Title")
+
+HTML  
+CSS   
+JavaScript  
+Jquery 
