@@ -70,16 +70,20 @@ $(document).ready(function () {
             let redJumpMove = proj + redDirectionArray[i]
             if ($(`#${proj}`).hasClass('red') || $(`#${proj}`).children().length > 0) {
                 $(`#${proj}`).css("opacity", "1")
-            } else {
+                
+            } else  if ($(`#${proj}`).children().length <= 0){
                 $(`#${proj}`).css("background-color", "rgba(0, 0, 0, 0.5)")
-            } 
-             if (($(`#${blackJumpMove}`).hasClass('red') && turn % 2)|| $(`#${blackJumpMove}`).children().length > 0) {
+                   
+            } else if ($(`#${blackJumpMove}`).hasClass('red') || $(`#${blackJumpMove}`).children().length > 0) {
                 $(`#${blackJumpMove}`).css("opacity", "1")
-             } else if ($(`#${proj}`).hasClass('black') && ($(`#${proj}`).children().length > 0) && turn % 2) { 
+                
+             } else if ($(`#${blackJumpMove}`).hasClass('black') || $(`#${proj}`).children().length >= 1) { 
                 $(`#${blackJumpMove}`).css("background-color", "rgba(0, 0, 0, 0.5)")
-             }else if (($(`#${redJumpMove}`).hasClass('red') && turn % 2 === 0)|| $(`#${redJumpMove}`).children().length > 0) {
+
+             } else if ($(`#${redJumpMove}`).hasClass('red') || $(`#${redJumpMove}`).children().length > 0) {
                 $(`#${redJumpMove}`).css("opacity", "1")
-             } else  if ($(`#${proj}`).hasClass('black') || $(`#${proj}`).children().length > 0) {
+
+             }  else if ( $(`#${proj}`).children().length >= 1 || (`#${redJumpMove}`).hasClass('black')) {
                 $(`#${redJumpMove}`).css("background-color", "rgba(0, 0, 0, 0.5)")
              }
         })
@@ -91,16 +95,16 @@ $(document).ready(function () {
         project.forEach((position, index) => {
             $(`#${position}`).bind('click', function (e) {
                 if ($(`#${position}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${previousId}`).hasClass('blackpieces')) {
-                    $(`#blackpiece${blackPiece[1]}`).detach().appendTo(`#${e.target.id}`)
+                    $(`#blackpiece${blackPiece[1]}`).appendTo(`#${e.target.id}`)
                     console.log(blackPiece[1], e.target.id)
                     turn++
                     let switchPlayers = changeTurn()
                 } else if ($(`#${position}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${previousId}`).hasClass('redpieces')) {
-                    $(`#redpiece${redPiece[1]}`).detach().appendTo(`#${e.target.id}`)
+                    $(`#redpiece${redPiece[1]}`).appendTo(`#${e.target.id}`)
                     console.log(redPiece[1], e.target.id)
                     turn++
                     let switchPlayers = changeTurn()
-                }
+                }self
             })
         })
     }
