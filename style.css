@@ -14,11 +14,16 @@
 nav {
       display:flex;
       flex-direction: row;
+      align-items: center;
+      justify-content: center;
       background-color: rgb(31, 30, 30);
       
+      
   }
-  li {
-    display: inline;
+  h1 {
+    color: bisque;
+    font-size: large;
+    font-weight: bolder;
   }
  section {
    height: 100vh;
@@ -34,14 +39,14 @@ nav {
 #red-side {
    
     grid-area: rd;
-    width: 100px;
+    width: 150px;
     height: 600px;
     background-color: red;
 }
 #black-side {
 
     grid-area: blck;
-    width: 100px;
+    width: 150px;
     height: 600px;
     background-color: black;
     
@@ -84,5 +89,6 @@ img {
 thead {
   display: none;
 }
+
 /* later */
 
