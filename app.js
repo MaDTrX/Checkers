@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     //Start Settings/ Black Always Strats
     if (turn === 1) {
-        console.log('Black Starts')
+        document.querySelector('h1').innerHTML = "<h1>BLACK STARTS!</h1>"
         //removes Pointer Events
         $('.redpieces').css('pointer-events', 'none');
     }
@@ -68,6 +68,7 @@ $(document).ready(function () {
             let redDoubleJumper = redDirectionArray[i] * multiplier
             let blackJumpMove = proj - blackDirectionArray[i]
             let redJumpMove = proj + redDirectionArray[i]
+
             if ($(`#${proj}`).hasClass('red') || $(`#${proj}`).children().length > 0) {
                 $(`#${proj}`).css("opacity", "1")
                 
@@ -77,13 +78,13 @@ $(document).ready(function () {
             } else if ($(`#${blackJumpMove}`).hasClass('red') || $(`#${blackJumpMove}`).children().length > 0) {
                 $(`#${blackJumpMove}`).css("opacity", "1")
                 
-             } else if ($(`#${blackJumpMove}`).hasClass('black') || $(`#${proj}`).children().length >= 1) { 
+             } else if ( ($(`#${proj}`).children().length > 0 || $(`#${blackJumpMove}`).children().length <= 0)) { 
                 $(`#${blackJumpMove}`).css("background-color", "rgba(0, 0, 0, 0.5)")
 
              } else if ($(`#${redJumpMove}`).hasClass('red') || $(`#${redJumpMove}`).children().length > 0) {
                 $(`#${redJumpMove}`).css("opacity", "1")
 
-             }  else if ( $(`#${proj}`).children().length >= 1 || (`#${redJumpMove}`).hasClass('black')) {
+             }  else if ( $(`#${proj}`).children().length > 0 || (`#${redJumpMove}`).hasClass('black')) {
                 $(`#${redJumpMove}`).css("background-color", "rgba(0, 0, 0, 0.5)")
              }
         })
@@ -96,50 +97,57 @@ $(document).ready(function () {
             $(`#${position}`).bind('click', function (e) {
                 if ($(`#${position}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${previousId}`).hasClass('blackpieces')) {
                     $(`#blackpiece${blackPiece[1]}`).appendTo(`#${e.target.id}`)
-                    console.log(blackPiece[1], e.target.id)
+                    console.log(position)
+                    console.log("previousId", previousId)
+                    console.log("moveClick", e.target.id)
                     turn++
                     let switchPlayers = changeTurn()
+                          
+                
                 } else if ($(`#${position}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${previousId}`).hasClass('redpieces')) {
                     $(`#redpiece${redPiece[1]}`).appendTo(`#${e.target.id}`)
-                    console.log(redPiece[1], e.target.id)
+                    console.log("moveClick",  e.target.id)
                     turn++
                     let switchPlayers = changeTurn()
-                }self
+                    $(`#${position}`).off()
+                }
             })
         })
     }
-    function countCaptives() {
-        //if board piece is hopped over 
-        //move piece to aside
-        //red/black captured++
-    }
+    // function countCaptives() {
+    //     if ( ) {
+
+    //     }
+
+    // } 
     //turn change mechanics
     function changeTurn() {
         if (turn % 2) {
             $('.blackpieces').css('pointer-events', 'auto');
-            console.log('BlackTurn')
+            document.querySelector('h1').innerHTML = "<h1>BLACK'S TURN</h1>"
             $('.redpieces').css('pointer-events', 'none');
         } if (turn % 2 === 0) {
             $('.redpieces').css('pointer-events', 'auto');
-            console.log('redsTurn')
+            document.querySelector('h1').innerHTML = "<h1>RED'S TURN</h1>"
             $('.blackpieces').css('pointer-events', 'none');
         }
 
     }
-    // function declareWinner(moves, capturedtray) {
-    //     if (capturedTray = 12 || moves.length === 0) {
-    //         console.log('Winner')
-    //         $('.gameOver').css('pointer-events', 'none');
-    //     }
+    function declareWinner(moves, capturedtray) {
+        if (capturedTray = 12 || moves.length === 0) {
+        document.querySelector('h1').innerHTML = "<h1>GAME OVER</h1>"
+                
+            $('.gameOver').css('pointer-events', 'none');
+        }
 
-    //}
+    }
     //click Reset
     function resetClick() {
         $(`.red`).css("background-color", "red")
         $(`.black`).css("background-color", "black")
     }
     // click event listener
-    $('#checkersBoard').on('click', function (e) {
+    $('#checkersBoard').bind('click', function (e) {
         resetClick()
         gamePlay(e.target.parentElement.id, e.target)
 

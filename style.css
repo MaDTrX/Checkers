@@ -24,6 +24,8 @@ nav {
     color: bisque;
     font-size: large;
     font-weight: bolder;
+    margin: 0;
+    padding: 0;
   }
  section {
    height: 100vh;
