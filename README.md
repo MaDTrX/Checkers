@@ -15,4 +15,4 @@ Ai intergration
 Better Ui  
 Game Options  
 
-[Checkes](Pictures/Checkers.png)
+[Checkers_Image](Pictures/Checkers.png)
