@@ -23,25 +23,32 @@ $(document).ready(function () {
         //removes Pointer Events
         $('.redpieces').css('pointer-events', 'none');
     }
+    
 
 
     let gamePlay = function (parent, piece) {
         let color = resetClick()
+        console.log(piece.id)
+        changeTurn()
         if (parent && (piece.className === 'blackpieces')) {
             $(`#${piece.id}`).prop('id', `blackpiece${parent}`)
+            console.log(piece.id)
             let possibleBlackMoves = calculateBlackMovement(piece.id)
             let displayBlackMove = displayBlackMovement(possibleBlackMoves)
             let moveBlack = makeMove(possibleBlackMoves, piece.id)
-            turn++
+            declareWinner(redCaptives)
+            
+           
 
         } else if (parent && (piece.className === 'redpieces')) {
             $(`#${piece.id}`).prop('id', `redpiece${parent}`)
+            console.log(piece.id)
             let possibleRedMoves = calculateRedMovement(piece.id)
             let displayRedMove = displayRedMovement(possibleRedMoves)
             let moveRed = makeMove(possibleRedMoves, piece.id)
-            turn++
+            declareWinner(blackCaptives)
+            
         }
-        changeTurn()
     }
 
     function calculateBlackMovement(piece) {
@@ -70,7 +77,7 @@ $(document).ready(function () {
             if ($(`#${proj}`).children().length <= 0 && $(`#${proj}`).hasClass('black')) {
                 $(`#${proj}`).css("background-color", "rgba(0, 0, 0, 0.5)")
             }
-            if ($(`#${proj}`).children().length > 0 && $(`#${blackJumpMove}`).children().length <= 0) {
+            if ($(`#${proj}`).children().length > 0 && $(`#${blackJumpMove}`).children().length <= 0 && $(`#${blackJumpMove}`).hasClass('black') && $(`#${proj}`).children().hasClass('redpieces') ) {
                 $(`#${blackJumpMove}`).css("background-color", "rgba(0, 0, 0, 0.5)")
 
             } else if ($(`#${blackJumpMove}`).hasClass('red') || $(`#${blackJumpMove}`).children().length > 0) {
@@ -87,7 +94,7 @@ $(document).ready(function () {
             if ($(`#${proj}`).children().length <= 0 && $(`#${proj}`).hasClass('black')) {
                 $(`#${proj}`).css("background-color", "rgba(0, 0, 0, 0.5)")
 
-            } if ($(`#${proj}`).children().length > 0 && $(`#${redJumpMove}`).children().length <= 0) {
+            } if ($(`#${proj}`).children().length > 0 && $(`#${redJumpMove}`).children().length <= 0 && $(`#${redJumpMove}`).hasClass('black') && $(`#${proj}`).children().hasClass('blackpieces')) {
                 $(`#${redJumpMove}`).css("background-color", "rgba(0, 0, 0, 0.5)")
 
             } else if ($(`#${redJumpMove}`).hasClass('red') || $(`#${redJumpMove}`).children().length > 0) {
@@ -100,23 +107,37 @@ $(document).ready(function () {
 
     function makeMove(project, piece) {
         blackPiece = piece.split("blackpiece")
-        console.log("black", blackPiece)
+        console.log("black", blackPiece[1])
         redPiece = piece.split("redpiece")
-        console.log("red", redPiece)
+        console.log("red", redPiece[1])
         project.forEach((position, index) => {
 
-            $(`.black`).on('click', function (e) {
+            $(`.black`).bind('click', function (e) {
 
                 if ($(`#${position}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${piece}`).hasClass('blackpieces') && $(`#${position}`).children().length <= 0) {
-                    $(`#blackpiece${blackPiece[1]}`).detach().appendTo(`#${e.currentTarget.id}`)
-                    //console.log(blackPiece[1])
+                    console.log("bp", position)
+                    $(`#blackpiece${blackPiece[1]}`).detach().appendTo(`#${e.target.id}`)
+                    turnCounter (blackPiece[1], e.target.id)
+                    console.log(turn)
                     redCaptured(blackPiece[1], e.target.id)
+
                 } if ($(`#${position}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${piece}`).hasClass('redpieces') && $(`#${position}`).children().length <= 0) {
-                    $(`#redpiece${redPiece[1]}`).detach().appendTo(`#${e.currentTarget.id}`)
+                    console.log("rp", piece)
+                    $(`#redpiece${redPiece[1]}`).detach().appendTo(`#${e.target.id}`)
+                    turnCounter (redPiece[1], e.target.id)
+                    console.log(turn)
                     blackCaptured(redPiece[1], e.target.id)
                 }
             })
         })
+    }
+    function turnCounter (piece, target){
+        if ($(`#blackpiece${piece}`).detach().appendTo(`#${target}`) && turn % 2){
+            turn++
+
+        } else { ($(`#redpiece${piece}`).detach().appendTo(`#${target}`) && turn % 2 === 0) 
+            turn++
+        }
     }
 
     function changeTurn() {
@@ -132,51 +153,46 @@ $(document).ready(function () {
 
     }
     function redCaptured(piece, target) {
-        
+        console.log( "R", 'piece', piece, "target", target)
         let tNum = Number(target)
         jump = Math.abs(piece - tNum)
         let num = Number(jump) 
-        console.log("rnum", jump)
-
-
+        
         if (num === 14) {
             $(`#${tNum + blackUpRight}`).empty()
             blackCaptives++
-            console.log("blackC", blackCaptives)
-          
+            console.log("blackC", blackCaptives)  
         } 
          if (num === 18) {
             $(`#${tNum + blackUpLeft}`).empty()
-            blackCaptives++
-            console.log("blackC", blackCaptives)
+            blackCaptives++  
             }
+            document.getElementById('blackside').textContent =`${redCaptives}`
         }
     function blackCaptured(piece, target) {
+        console.log("B", 'piece', piece, "target", target)
         let tNum = Number(target)
         jump = Math.abs(piece - tNum)
         let num = Number(jump)
-console.log("bnum", jump)
+
         if (num === 18) {
             $(`#${tNum - redDownRight}`).empty()
-            redCaptives++
-            console.log("redc", redCaptives)
-           
+            redCaptives++  
         }
          if (num === 14) {
             $(`#${tNum - redDownLeft}`).empty()
-            redCaptives++
-            console.log("redc",redCaptives)
+            redCaptives++    
         }
+        document.getElementById('redside').textContent =`${blackCaptives}`
     }
-    function declareWinner(moves, capturedtray) {
-        if (capturedTray = 12 || moves.length === 0) {
+    function declareWinner (capturedTray) {
+        if (capturedTray === 12) {
             document.querySelector('h1').innerHTML = "<h1>GAME OVER</h1>"
-
-            $('.gameOver').css('pointer-events', 'none');
+            $('#checkerBoard').css('pointer-events', 'none');
         }
     }
     //click Reset
-    function resetClick() {
+    function resetClick () {
         $(`.red`).css("background-color", "red")
         $(`.black`).css("background-color", "black")
     }

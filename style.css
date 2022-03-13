@@ -38,7 +38,7 @@ nav {
        
 } 
 
-#red-side {
+/* #red-side {
    
     grid-area: rd;
     width: 150px;
@@ -52,7 +52,7 @@ nav {
     height: 600px;
     background-color: black;
     
-}
+} */
 table {
     border-collapse: collapse;
 }
@@ -88,7 +88,7 @@ img {
 #quit {
     display:none;
 }
-thead {
+div {
   display: none;
 }
 
