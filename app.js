@@ -35,7 +35,7 @@ $(document).ready(function () {
             
             let possibleBlackMoves = calculateBlackMovement(piece.id)
             let displayBlackMove = displayBlackMovement(possibleBlackMoves)
-            let moveBlack = makeMove(possibleBlackMoves, piece.id)
+            let moveBlack = makeMove(piece, piece.id)
             declareWinner(redCaptives)
             
            
@@ -45,7 +45,7 @@ $(document).ready(function () {
             
             let possibleRedMoves = calculateRedMovement(piece.id)
             let displayRedMove = displayRedMovement(possibleRedMoves)
-            let moveRed = makeMove(possibleRedMoves, piece.id)
+            let moveRed = makeMove(piece, piece.id)
             declareWinner(blackCaptives)
             
         }
@@ -105,29 +105,29 @@ $(document).ready(function () {
     }
 
 
-    function makeMove(project, piece) {
+    function makeMove(target, piece) {
         blackPiece = piece.split("blackpiece")
         
         redPiece = piece.split("redpiece")
         
          $(`.black`).on('click', function (e) {
 
-                if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${piece}`).hasClass('blackpieces') && $(`#${e.target.id}`).children().length <= 0) {
+                if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && target.className ==='blackpieces' && $(`#${e.target.id}`).children().length <= 0) {
                     console.log("bp", piece)
                     $(`#blackpiece${blackPiece[1]}`).detach().appendTo(`#${e.target.id}`)
-                    turnCounter (blackPiece[1], e.target.id)
                     console.log(turn)
                     $( `.black`).off('click')
                     redCaptured(blackPiece[1], e.target.id)
+                    turnCounter (blackPiece[1], e.target.id)
                     //.off('click')
 
-                } else if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${piece}`).hasClass('redpieces') && $(`#${e.target.id}`).children().length <= 0) {
+                } else if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && target.className === 'redpieces' && $(`#${e.target.id}`).children().length <= 0) {
                    console.log("rp", piece)
                     $(`#redpiece${redPiece[1]}`).detach().appendTo(`#${e.target.id}`)
-                    turnCounter (redPiece[1], e.target.id)
                     console.log(turn)
                     $( `.black`).off('click')
                     blackCaptured(redPiece[1], e.target.id)
+                    turnCounter (redPiece[1], e.target.id)
                     //.off('click')
                 }
            
@@ -162,14 +162,15 @@ $(document).ready(function () {
         
         if (num === 14) {
             $(`#${tNum + blackUpRight}`).empty()
-            blackCaptives++
             console.log("blackC", blackCaptives)  
-        } 
-         if (num === 18) {
+            blackCaptives++
+            
+        } else if (num === 18) {
             $(`#${tNum + blackUpLeft}`).empty()
-            blackCaptives++  
-            }
-            document.getElementById('blackside').textContent =`${redCaptives}`
+            blackCaptives++
+            
+        }
+        document.getElementById('blackside').textContent =`${blackCaptives}`
         }
     function blackCaptured(piece, target) {
        // console.log("B", 'piece', piece, "target", target)
@@ -179,13 +180,16 @@ $(document).ready(function () {
 
         if (num === 18) {
             $(`#${tNum - redDownRight}`).empty()
-            redCaptives++  
-        }
-         if (num === 14) {
-            $(`#${tNum - redDownLeft}`).empty()
+            console.log("right capture", tNum - redDownRight)
             redCaptives++    
+           
+        } else if (num === 14) {
+            $(`#${tNum - redDownLeft}`).empty()
+            console.log("left capture", tNum - redDownLeft)
+            redCaptives++    
+            
         }
-        document.getElementById('redside').textContent =`${blackCaptives}`
+        document.getElementById('redside').textContent =`${redCaptives}`
     }
     function declareWinner (capturedTray) {
         if (capturedTray === 12) {
