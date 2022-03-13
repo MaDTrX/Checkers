@@ -134,9 +134,9 @@ $(document).ready(function () {
     function redCaptured(piece, target) {
         
         let tNum = Number(target)
-        jump = Math.abs(piece - target)
+        jump = Math.abs(piece - tNum)
         let num = Number(jump) 
-        console.log("rnum", num)
+        console.log("rnum", jump)
 
 
         if (num === 14) {
@@ -146,24 +146,24 @@ $(document).ready(function () {
           
         } 
          if (num === 18) {
-            $(`#redpiece${tNum + blackUpLeft}`).empty()
+            $(`#${tNum + blackUpLeft}`).empty()
             blackCaptives++
             console.log("blackC", blackCaptives)
             }
         }
     function blackCaptured(piece, target) {
         let tNum = Number(target)
-        jump = Math.abs(piece - target)
+        jump = Math.abs(piece - tNum)
         let num = Number(jump)
-console.log("bnum", num)
+console.log("bnum", jump)
         if (num === 18) {
-            $(`#blackpiece${tNum - redDownRight}`).empty()
+            $(`#${tNum - redDownRight}`).empty()
             redCaptives++
             console.log("redc", redCaptives)
            
         }
          if (num === 14) {
-            $(`#blackpiece${tNum - redDownLeft}`).empty()
+            $(`#${tNum - redDownLeft}`).empty()
             redCaptives++
             console.log("redc",redCaptives)
         }
