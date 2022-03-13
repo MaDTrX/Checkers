@@ -28,11 +28,11 @@ $(document).ready(function () {
 
     let gamePlay = function (parent, piece) {
         let color = resetClick()
-        console.log(piece.id)
+        
         changeTurn()
         if (parent && (piece.className === 'blackpieces')) {
             $(`#${piece.id}`).prop('id', `blackpiece${parent}`)
-            console.log(piece.id)
+            
             let possibleBlackMoves = calculateBlackMovement(piece.id)
             let displayBlackMove = displayBlackMovement(possibleBlackMoves)
             let moveBlack = makeMove(possibleBlackMoves, piece.id)
@@ -42,7 +42,7 @@ $(document).ready(function () {
 
         } else if (parent && (piece.className === 'redpieces')) {
             $(`#${piece.id}`).prop('id', `redpiece${parent}`)
-            console.log(piece.id)
+            
             let possibleRedMoves = calculateRedMovement(piece.id)
             let displayRedMove = displayRedMovement(possibleRedMoves)
             let moveRed = makeMove(possibleRedMoves, piece.id)
@@ -55,7 +55,7 @@ $(document).ready(function () {
         blackPiece = piece.split("blackpiece")
         blackPiece.shift()
         const rightOrLeft = [Number(blackPiece) - blackUpLeft, Number(blackPiece) - blackUpRight]
-        console.log("r", rightOrLeft)
+       
         return rightOrLeft
     }
 
@@ -64,7 +64,7 @@ $(document).ready(function () {
         redPiece = piece.split("redpiece")
         redPiece.shift()
         let leftOrRight = [Number(redPiece) + redDownLeft, Number(redPiece) + redDownRight]
-        console.log("l", leftOrRight)
+       
         return leftOrRight
     }
 
@@ -107,28 +107,30 @@ $(document).ready(function () {
 
     function makeMove(project, piece) {
         blackPiece = piece.split("blackpiece")
-        console.log("black", blackPiece[1])
+        
         redPiece = piece.split("redpiece")
-        console.log("red", redPiece[1])
-        project.forEach((position, index) => {
+        
+         $(`.black`).on('click', function (e) {
 
-            $(`.black`).bind('click', function (e) {
-
-                if ($(`#${position}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${piece}`).hasClass('blackpieces') && $(`#${position}`).children().length <= 0) {
-                    console.log("bp", position)
+                if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${piece}`).hasClass('blackpieces') && $(`#${e.target.id}`).children().length <= 0) {
+                    console.log("bp", piece)
                     $(`#blackpiece${blackPiece[1]}`).detach().appendTo(`#${e.target.id}`)
                     turnCounter (blackPiece[1], e.target.id)
                     console.log(turn)
+                    $( `.black`).off('click')
                     redCaptured(blackPiece[1], e.target.id)
+                    //.off('click')
 
-                } if ($(`#${position}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${piece}`).hasClass('redpieces') && $(`#${position}`).children().length <= 0) {
-                    console.log("rp", piece)
+                } else if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && $(`#${piece}`).hasClass('redpieces') && $(`#${e.target.id}`).children().length <= 0) {
+                   console.log("rp", piece)
                     $(`#redpiece${redPiece[1]}`).detach().appendTo(`#${e.target.id}`)
                     turnCounter (redPiece[1], e.target.id)
                     console.log(turn)
+                    $( `.black`).off('click')
                     blackCaptured(redPiece[1], e.target.id)
+                    //.off('click')
                 }
-            })
+           
         })
     }
     function turnCounter (piece, target){
@@ -153,7 +155,7 @@ $(document).ready(function () {
 
     }
     function redCaptured(piece, target) {
-        console.log( "R", 'piece', piece, "target", target)
+       // console.log( "R", 'piece', piece, "target", target)
         let tNum = Number(target)
         jump = Math.abs(piece - tNum)
         let num = Number(jump) 
@@ -170,7 +172,7 @@ $(document).ready(function () {
             document.getElementById('blackside').textContent =`${redCaptives}`
         }
     function blackCaptured(piece, target) {
-        console.log("B", 'piece', piece, "target", target)
+       // console.log("B", 'piece', piece, "target", target)
         let tNum = Number(target)
         jump = Math.abs(piece - tNum)
         let num = Number(jump)
@@ -197,7 +199,7 @@ $(document).ready(function () {
         $(`.black`).css("background-color", "black")
     }
     // click event listener
-    $('#checkersBoard').bind('click', function (e) {
+    $('#checkersBoard').on('click', function (e) {
         gamePlay(e.target.parentElement.id, e.target)
     })
 })
