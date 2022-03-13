@@ -132,25 +132,40 @@ $(document).ready(function () {
 
     }
     function redCaptured(piece, target) {
+        
+        let tNum = Number(target)
         jump = Math.abs(piece - target)
         let num = Number(jump) 
-        console.log("num", piece)
-console.log(target)
+        console.log("rnum", num)
+
 
         if (num === 14) {
-            $(`#redpiece${target + blackUpRight}`).remove()
-        } else if (num === 18) {
-            $(`#redpiece${target + blackUpLeft}`).remove()
+            $(`#${tNum + blackUpRight}`).empty()
+            blackCaptives++
+            console.log("blackC", blackCaptives)
+          
+        } 
+         if (num === 18) {
+            $(`#redpiece${tNum + blackUpLeft}`).empty()
+            blackCaptives++
+            console.log("blackC", blackCaptives)
+            }
         }
-    }
     function blackCaptured(piece, target) {
+        let tNum = Number(target)
         jump = Math.abs(piece - target)
         let num = Number(jump)
-console.log(num)
+console.log("bnum", num)
         if (num === 18) {
-            $(`#blackpiece${target - redDownRight}`).remove()
-        } else if (num === 14) {
-            $(`#blackpiece${target - redDownLeft}`).remove()
+            $(`#blackpiece${tNum - redDownRight}`).empty()
+            redCaptives++
+            console.log("redc", redCaptives)
+           
+        }
+         if (num === 14) {
+            $(`#blackpiece${tNum - redDownLeft}`).empty()
+            redCaptives++
+            console.log("redc",redCaptives)
         }
     }
     function declareWinner(moves, capturedtray) {
