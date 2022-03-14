@@ -31,9 +31,8 @@ $(document).ready(function () {
         
         changeTurn()
         if (parent && (piece.className === 'blackpieces')) {
-            $(`#${piece.id}`).prop('id', `blackpiece${parent}`)
             
-            let possibleBlackMoves = calculateBlackMovement(piece.id)
+            let possibleBlackMoves = calculateBlackMovement(piece.id, piece)
             let displayBlackMove = displayBlackMovement(possibleBlackMoves)
             let moveBlack = makeMove(piece, piece.id)
             declareWinner(redCaptives)
@@ -41,9 +40,8 @@ $(document).ready(function () {
            
 
         } else if (parent && (piece.className === 'redpieces')) {
-            $(`#${piece.id}`).prop('id', `redpiece${parent}`)
-            
-            let possibleRedMoves = calculateRedMovement(piece.id)
+           
+            let possibleRedMoves = calculateRedMovement(piece.id, piece)
             let displayRedMove = displayRedMovement(possibleRedMoves)
             let moveRed = makeMove(piece, piece.id)
             declareWinner(blackCaptives)
@@ -51,19 +49,21 @@ $(document).ready(function () {
         }
     }
 
-    function calculateBlackMovement(piece) {
-        blackPiece = piece.split("blackpiece")
-        blackPiece.shift()
-        const rightOrLeft = [Number(blackPiece) - blackUpLeft, Number(blackPiece) - blackUpRight]
-       
+    function calculateBlackMovement(piece, target) {
+        let targetId = $(target).closest('td').attr('id')
+        let sqNum = Number(targetId)
+        const rightOrLeft = [sqNum - blackUpLeft, sqNum - blackUpRight]
+       //console.log(targetId)
         return rightOrLeft
     }
 
 
-    function calculateRedMovement(piece) {
-        redPiece = piece.split("redpiece")
-        redPiece.shift()
-        let leftOrRight = [Number(redPiece) + redDownLeft, Number(redPiece) + redDownRight]
+    function calculateRedMovement(piece, target) {
+        let targetId = $(target).closest('td').attr('id')
+        let sqNum = Number(targetId)
+        //console.log(targetId)
+        
+        let leftOrRight = [sqNum + redDownLeft, sqNum + redDownRight]
        
         return leftOrRight
     }
@@ -107,28 +107,28 @@ $(document).ready(function () {
 
     function makeMove(target, piece) {
         blackPiece = piece.split("blackpiece")
-        
+        let targetId = $(target).closest('td').attr('id')
+        //console.log(targetId)
         redPiece = piece.split("redpiece")
         
          $(`.black`).on('click', function (e) {
 
                 if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && target.className ==='blackpieces' && $(`#${e.target.id}`).children().length <= 0) {
-                    console.log("bp", piece)
+                   // console.log("bp", piece)
                     $(`#blackpiece${blackPiece[1]}`).detach().appendTo(`#${e.target.id}`)
-                    console.log(turn)
+                     
+                    redCaptured(targetId, e.target.id)
                     $( `.black`).off('click')
-                    redCaptured(blackPiece[1], e.target.id)
                     turnCounter (blackPiece[1], e.target.id)
-                    //.off('click')
-
+                    
                 } else if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && target.className === 'redpieces' && $(`#${e.target.id}`).children().length <= 0) {
-                   console.log("rp", piece)
+                //    console.log("rp", piece)
                     $(`#redpiece${redPiece[1]}`).detach().appendTo(`#${e.target.id}`)
-                    console.log(turn)
+            
+                   blackCaptured(targetId, e.target.id)
                     $( `.black`).off('click')
-                    blackCaptured(redPiece[1], e.target.id)
                     turnCounter (redPiece[1], e.target.id)
-                    //.off('click')
+                    
                 }
            
         })
@@ -154,36 +154,43 @@ $(document).ready(function () {
         }
 
     }
-    function redCaptured(piece, target) {
-       // console.log( "R", 'piece', piece, "target", target)
-        let tNum = Number(target)
-        jump = Math.abs(piece - tNum)
-        let num = Number(jump) 
+    function redCaptured (target, piece) {
+       
+        let tNum = Number(piece)
+        let num = Number(target) 
+        jump = Math.abs(num - tNum)
         
-        if (num === 14) {
+        if (jump === 14) {
             $(`#${tNum + blackUpRight}`).empty()
             console.log("blackC", blackCaptives)  
             blackCaptives++
             
-        } else if (num === 18) {
+        } 
+         if (jump === 18) {
             $(`#${tNum + blackUpLeft}`).empty()
             blackCaptives++
             
         }
         document.getElementById('blackside').textContent =`${blackCaptives}`
         }
-    function blackCaptured(piece, target) {
-       // console.log("B", 'piece', piece, "target", target)
-        let tNum = Number(target)
-        jump = Math.abs(piece - tNum)
-        let num = Number(jump)
+    function blackCaptured(target, piece) {
+        
+        console.log(target)
+        let tNum = Number(piece)
+        //console.log("tn", tNum)
+        let num = Number(target)
+        console.log(piece)
+        jump = Math.abs(num - tNum)
+       
+        console.log(tNum)
 
-        if (num === 18) {
+        if (jump === 18) {
             $(`#${tNum - redDownRight}`).empty()
             console.log("right capture", tNum - redDownRight)
             redCaptives++    
            
-        } else if (num === 14) {
+        } 
+         if (jump === 14) {
             $(`#${tNum - redDownLeft}`).empty()
             console.log("left capture", tNum - redDownLeft)
             redCaptives++    
