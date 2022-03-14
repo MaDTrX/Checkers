@@ -74,10 +74,15 @@ $(document).ready(function () {
             let redDoubleJumper = redDirectionArray[i] * multiplier
             let redJumpMove = proj + redDirectionArray[i]
 
-            if ($(`#${proj}`).children().length <= 0 && $(`#${proj}`).hasClass('black')) {
+            if ($(`#${proj}`).children().length <= 0 
+            && $(`#${proj}`).hasClass('black')){
                 $(`#${proj}`).css("background-color", "rgba(0, 0, 0, 0.5)")
 
-            } if ($(`#${proj}`).children().length > 0 && $(`#${redJumpMove}`).children().length <= 0 && $(`#${redJumpMove}`).hasClass('black') && $(`#${proj}`).children().hasClass('blackpieces')) {
+            }  else if ($(`#${proj}`).children().length > 0 
+            && $(`#${proj}`).children().hasClass('blackpieces')
+            && $(`#${redJumpMove}`).children().length <= 0 
+            && $(`#${redJumpMove}`).hasClass('black') ) {
+                $(`#${proj}`).css("opacity", "1")
                 $(`#${redJumpMove}`).css("background-color", "rgba(0, 0, 0, 0.5)")
 
             } else if ($(`#${redJumpMove}`).hasClass('red') || $(`#${redJumpMove}`).children().length > 0) {
@@ -119,10 +124,15 @@ $(document).ready(function () {
     }
 
     function changeTurnOrDeclareWinner(capturedTray) {
-    
-        if (capturedTray === 12) {
+    console.log(turn)
+        if (capturedTray === 12 && turn % 2) {
             console.log('works')
-           $('#display').text('GAME OVER')
+           $('#display').text('GAME OVER! - RED WINS!')
+            $('.redpieces').css('pointer-events', 'none')
+            $('.blackpieces').css('pointer-events', 'none')
+
+         } else if (capturedTray === 12 && turn % 2 === 0){
+            $('#display').text('GAME OVER! - BLACK WINS!')
             $('.redpieces').css('pointer-events', 'none')
             $('.blackpieces').css('pointer-events', 'none')
 
