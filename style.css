@@ -53,9 +53,9 @@ nav {
     background-color: black;
     
 } */
-table {
-    border-collapse: collapse;
-}
+/* table { */
+    /* //border-collapse: collapse;
+} */
 
 tbody {
     grid-area: brd;
