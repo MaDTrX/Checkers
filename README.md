@@ -14,5 +14,8 @@ Future Updates:
 Ai intergration  
 Better Ui  
 Game Options  
+King addition
+Double Jump
+Must Take Rule
 
 [Checkers_Image](Pictures/Checkers.png)
