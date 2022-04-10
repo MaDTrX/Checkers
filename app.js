@@ -13,6 +13,8 @@ $(document).ready(function () {
     // number of captives
     let redCaptives = 0
     let blackCaptives = 0
+    let redPieces = 12
+    let blackPieces = 12
     //turn incrementer
     let turn = 1
     let redPiece, blackPiece, jump
@@ -27,7 +29,7 @@ $(document).ready(function () {
     let gamePlay = function (parent, piece) {
         let color = resetClick()
        
-        console.log(redCaptives, blackCaptives)
+       // console.log(redCaptives, blackCaptives)
         if (parent && (piece.className === 'blackpieces')) {
             let possibleBlackMoves = calculateBlackMovement(piece.id, piece)
             let displayBlackMove = displayBlackMovement(possibleBlackMoves)
@@ -124,9 +126,9 @@ $(document).ready(function () {
     }
 
     function changeTurnOrDeclareWinner(capturedTray) {
-    console.log(turn)
+   // console.log(turn)
         if (capturedTray === 12 && turn % 2) {
-            console.log('works')
+            //console.log('works')
            $('#display').text('GAME OVER! - RED WINS!')
             $('.redpieces').css('pointer-events', 'none')
             $('.blackpieces').css('pointer-events', 'none')
@@ -155,10 +157,14 @@ $(document).ready(function () {
         if (jump === 14) {
             $(`#${tNum + blackUpRight}`).empty()
             blackCaptives++
+            redPieces--
+            console.log(redPieces, "score")
         }
         if (jump === 18) {
             $(`#${tNum + blackUpLeft}`).empty()
             blackCaptives++
+            redPieces--
+            console.log(redPieces, "score")
         }
         $('#blackside').text(`${blackCaptives}`)
         changeTurnOrDeclareWinner(blackCaptives)
@@ -171,16 +177,17 @@ $(document).ready(function () {
         if (jump === 18) {
             $(`#${tNum - redDownRight}`).empty()
             redCaptives++
+            blackPieces--
+            console.log(blackPieces, "score")
         }
         if (jump === 14) {
             $(`#${tNum - redDownLeft}`).empty()
             redCaptives++
+            blackPieces--
+            console.log(blackPieces, "score")
         }
         $('#redside').text(`${redCaptives}`)
-        changeTurnOrDeclareWinner(redCaptives)
-        
-        
-        
+        changeTurnOrDeclareWinner(redCaptives)   
     }
     function resetClick() {
         $(`.red`).css("background-color", "red")
@@ -192,4 +199,8 @@ $(document).ready(function () {
         // changeTurn()
 
     })
+
+    function get_score() {
+        return blackPieces - redPieces
+    }
 })
