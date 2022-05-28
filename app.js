@@ -19,7 +19,7 @@ $(document).ready(function () {
     let turn = 1
     let redPiece, blackPiece, jump
 
-    //Start Settings/ Black Always Strats
+    //Start Settings/ Black Always Starts
     if (turn === 1) {
         document.querySelector('h1').innerHTML = "<h1>BLACK STARTS!</h1>"
         //removes Pointer Events
@@ -29,7 +29,6 @@ $(document).ready(function () {
     let gamePlay = function (parent, piece) {
         let color = resetClick()
        
-       // console.log(redCaptives, blackCaptives)
         if (parent && (piece.className === 'blackpieces')) {
             let possibleBlackMoves = calculateBlackMovement(piece.id, piece)
             let displayBlackMove = displayBlackMovement(possibleBlackMoves)
