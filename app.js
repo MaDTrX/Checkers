@@ -101,6 +101,9 @@ $(document).ready(function () {
 
             if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && target.className === 'blackpieces' && $(`#${e.target.id}`).children().length <= 0) {
                 $(`#blackpiece${blackPiece[1]}`).detach().appendTo(`#${e.target.id}`)
+                if (e.target.id == 2 || e.target.id == 4 || e.target.id == 6 || e.target.id == 8) {
+                    $(`#blackpiece${blackPiece[1]}`).attr('src','Pictures/blackKing.png')
+                }
                 turnCounter(blackPiece[1], e.target.id)
                 redCaptured(targetId, e.target.id)
                 //changeTurnOrDeclareWinner(redCaptives)
@@ -108,6 +111,9 @@ $(document).ready(function () {
                 
             } else if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && target.className === 'redpieces' && $(`#${e.target.id}`).children().length <= 0) {
                 $(`#redpiece${redPiece[1]}`).detach().appendTo(`#${e.target.id}`)
+                if (e.target.id == 57 || e.target.id == 59 || e.target.id == 61 || e.target.id == 63) {
+                    $(`#redpiece${redPiece[1]}`).attr('src','Pictures/redKing.png')
+                }
                 turnCounter(redPiece[1], e.target.id)
                 blackCaptured(targetId, e.target.id)
                 //changeTurnOrDeclareWinner(blackCaptives)
