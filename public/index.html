@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkers</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <div></div>
+    <nav>
+        <h1 id="display">CHECKERS</h1>
+    </nav>
+    <section>
+        <aside >
+<h1 id="redside"></h1>
+
+        </aside>
+        <table>
+            <thead>
+                <th>
+                    <tr>
+                        <div><img src"" alt="red-king" id="red-king"></div>
+                    </tr>
+                    <tr><button id="quit">Concede</button></tr>
+                    <tr>
+                        <div><img src"" alt="black-king" id="black-king"></div>
+                    </tr>
+                </th>
+            </thead>
+            <tbody id="checkersBoard">
+                <tr>
+                    <td class="red" id="1"></td>
+                    <td class="black" id="2"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece2"></td>
+                    <td class="red" id="3"></td>
+                    <td class="black" id="4"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece4"></td>
+                    <td class="red" id="5"></td>
+                    <td class="black" id="6"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece6"></td>
+                    <td class="red" id="6"></td>
+                    <td class="black" id="8"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece8"></td>
+                </tr>
+                <tr>
+                    <td class="black" id="9"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece10"> </td>
+                    <td class="red" id="10"></td>
+                    <td class="black" id="11"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece12"></td>
+                    <td class="red" id="12"></td>
+                    <td class="black" id="13"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece14"></td>
+                    <td class="red" id="14"></td>
+                    <td class="black" id="15"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece16"></td>
+                    <td class="red" id="16"></td>
+                </tr>
+                <tr>
+                    <td class="red" id="17"></td>
+                    <td class="black" id="18"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece18"></td>
+                    <td class="red" id="19"></td>
+                    <td class="black" id="20"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece20"></td>
+                    <td class="red" id="21"></td>
+                    <td class="black" id="22"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece22"></td>
+                    <td class="red" id="23"></td>
+                    <td class="black" id="24"><img src="https://i.imgur.com/AXFGqaW.png" alt="red" class="redpieces"
+                            id="redpiece24"></td>
+                </tr>
+                <tr>
+                    <td class="black" id="25"></td>
+                    <td class="red" id="26"></td>
+                    <td class="black" id="27"></td>
+                    <td class="red" id="28"></td>
+                    <td class="black" id="29"></td>
+                    <td class="red" id="30"></td>
+                    <td class="black" id="31"></td>
+                    <td class="red" id="32"></td>
+                </tr>
+                <tr>
+                    <td class="red" id="33"></td>
+                    <td class="black" id="34"></td>
+                    <td class="red" id="35"></td>
+                    <td class="black" id="36"></td>
+                    <td class="red" id="37"></td>
+                    <td class="black" id="38"></td>
+                    <td class="red" id="39"></td>
+                    <td class="black" id="40"></td>
+                </tr>
+                <tr>
+                    <td class="black" id="41"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece1"></td>
+                    <td class="red" id="42"></td>
+                    <td class="black" id="43"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece3"></td>
+                    <td class="red" id="44"></td>
+                    <td class="black" id="45"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece5"></td>
+                    <td class="red" id="46"></td>
+                    <td class="black" id="47"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece7"></td>
+                    <td class="red" id="48"></td>
+                </tr>
+                <tr>
+                    <td class="red" id="49"></td>
+                    <td class="black" id="50"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece9"></td>
+                    <td class="red" id="51"></td>
+                    <td class="black" id="52"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece11"></td>
+                    <td class="red" id="53"></td>
+                    <td class="black" id="54"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece13"></td>
+                    <td class="red" id="55"></td>
+                    <td class="black" id="56"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece15"></td>
+                </tr>
+                <tr>
+                    <td class="black" id="57"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece17"></td>
+                    <td class="red" id="58"></td>
+                    <td class="black" id="59"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece19"></td>
+                    <td class="red" id="60"></td>
+                    <td class="black" id="61"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece21"></td>
+                    <td class="red" id="62"></td>
+                    <td class="black" id="63"><img src="https://i.imgur.com/CA4Nree.png" alt="black" class="blackpieces"
+                            id="blackpiece23"></td>
+                    <td class="red" id="64"></td>
+                </tr>
+            </tbody>
+        </table>
+        <aside >
+            <h1 id="blackside"></h1>
+
+        </aside>
+    </section>
+</body>
+
+</html>

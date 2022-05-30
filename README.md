@@ -13,8 +13,7 @@ Jquery
 Future Updates:  
 Ai intergration  
 Better Ui  
-Game Options   
-King addition  
+Game Options 
 Double Jump  
 Must Take Rule 
 
