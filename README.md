@@ -13,6 +13,8 @@ Jquery
 Future Updates:  
 Ai intergration  
 Better Ui  
-Game Options  
+Game Options 
+Double Jump  
+Must Take Rule 
 
 [Checkers_Image](Pictures/Checkers.png)
