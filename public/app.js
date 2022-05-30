@@ -1,16 +1,5 @@
 $(document).ready(function () {
-    //Right and Left black Up move direction
-    const blackUpRight = 7
-    const blackUpLeft = 9
-    //Left and Right Red down move direction
-    const redDownLeft = 7
-    const redDownRight = 9
-    //Up Right Down Left King move direction
-    const UpRightOrDownLeft = 7
-    const UpLeftOrDownRight = 9
-    //jump multiplier
-    const multiplier = 2
-    // number of captives
+    const dPad = [7, 9, 2]
     let redCaptives = 0
     let blackCaptives = 0
     let redPieces = 12
@@ -29,35 +18,64 @@ $(document).ready(function () {
     let gamePlay = function (parent, piece) {
         let color = resetClick()
        
-        if (parent && (piece.className === 'blackpieces')) {
-            let possibleBlackMoves = calculateBlackMovement(piece.id, piece)
+        if (parent && (piece.className === 'blackpieces king' || piece.className === 'redpieces king')) {
+            let possibleKingMoves = calculateKingMovement(piece)
+            let displayKingMove = displayKingMovement(possibleKingMoves, piece.className)
+            let moveKing = makeMove(piece, piece.id)
+            
+        } else if (parent && (piece.className === 'blackpieces')) {
+            let possibleBlackMoves = calculateBlackMovement(piece)
             let displayBlackMove = displayBlackMovement(possibleBlackMoves)
             let moveBlack = makeMove(piece, piece.id)
             
         } else if (parent && (piece.className === 'redpieces')) {
-            let possibleRedMoves = calculateRedMovement(piece.id, piece)
+            let possibleRedMoves = calculateRedMovement(piece)
             let displayRedMove = displayRedMovement(possibleRedMoves)
             let moveRed = makeMove(piece, piece.id)
         }
     }
-    function calculateBlackMovement(piece, target) {
+    function calculateKingMovement (target) {
+        console.log(target, 'test')
         let targetId = $(target).closest('td').attr('id')
         let sqNum = Number(targetId)
-        const rightOrLeft = [sqNum - blackUpLeft, sqNum - blackUpRight]
-        return rightOrLeft
+        return [sqNum - dPad[1], sqNum - dPad[0], sqNum + dPad[0], sqNum + dPad[1]]
     }
-    function calculateRedMovement(piece, target) {
+    function calculateBlackMovement(target) {
         let targetId = $(target).closest('td').attr('id')
         let sqNum = Number(targetId)
-        let leftOrRight = [sqNum + redDownLeft, sqNum + redDownRight]
-        return leftOrRight
+        return [sqNum - dPad[1], sqNum - dPad[0]]
+    }
+    function calculateRedMovement(target) {
+        let targetId = $(target).closest('td').attr('id')
+        let sqNum = Number(targetId)
+        return  [sqNum + dPad[0], sqNum + dPad[1]]
+    }
+    function displayKingMovement (project, className) {
+        let kingDirectioArray = [dPad[1], dPad[0], dPad[0], dPad[1]]
+        project.forEach((proj, i) => {
+            let kingJumpMove = [proj - kingDirectioArray[i], proj - kingDirectioArray[i], proj + kingDirectioArray[i], proj + kingDirectioArray[i]]
+
+            if ($(`#${proj}`).children().length <= 0 && $(`#${proj}`).hasClass('black')) {
+                $(`#${proj}`).css("background-color", "rgba(0, 0, 0, 0.5)")
+            }
+            if (className === 'blackpieces king') {
+                if ($(`#${proj}`).children().length > 0 && $(`#${kingJumpMove[i]}`).children().length <= 0 && $(`#${kingJumpMove[i]}`).hasClass('black') && ($(`#${proj}`).children().hasClass('redpieces') || $(`#${proj}`).children().hasClass('redpieces king') )) {
+                    $(`#${kingJumpMove[i]}`).css("background-color", "rgba(0, 0, 0, 0.5)")
+                }
+            } else if (className === 'redpieces king') {
+                if ($(`#${proj}`).children().length > 0 && $(`#${kingJumpMove[i]}`).children().length <= 0 && $(`#${kingJumpMove[i]}`).hasClass('black') && ($(`#${proj}`).children().hasClass('blackpieces') || $(`#${proj}`).children().hasClass('blackpieces king') )) {
+                    $(`#${kingJumpMove[i]}`).css("background-color", "rgba(0, 0, 0, 0.5)")
+            }
+
+            } else if ($(`#${kingJumpMove[i]}`).hasClass('red') || $(`#${kingJumpMove[i]}`).children().length > 0) {
+                $(`#${kingJumpMove[i]}`).css("opacity", "1")
+            }
+        })
     }
     function displayBlackMovement(project) {
-        let blackDirectionArray = [blackUpLeft, blackUpRight]
+        let blackDirectionArray = [dPad[1], dPad[0]]
         project.forEach((proj, i) => {
-            let blackDoubleJumper = blackDirectionArray[i] * multiplier
             let blackJumpMove = proj - blackDirectionArray[i]
-
             if ($(`#${proj}`).children().length <= 0 && $(`#${proj}`).hasClass('black')) {
                 $(`#${proj}`).css("background-color", "rgba(0, 0, 0, 0.5)")
             }
@@ -70,11 +88,9 @@ $(document).ready(function () {
         })
     }
     function displayRedMovement(project) {
-        let redDirectionArray = [redDownLeft, redDownRight]
+        let redDirectionArray = [dPad[0], dPad[1]]
         project.forEach((proj, i) => {
-            let redDoubleJumper = redDirectionArray[i] * multiplier
             let redJumpMove = proj + redDirectionArray[i]
-
             if ($(`#${proj}`).children().length <= 0 
             && $(`#${proj}`).hasClass('black')){
                 $(`#${proj}`).css("background-color", "rgba(0, 0, 0, 0.5)")
@@ -99,17 +115,33 @@ $(document).ready(function () {
 
         $(`.black`).on('click', function (e) {
 
-            if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && target.className === 'blackpieces' && $(`#${e.target.id}`).children().length <= 0) {
+            if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && (target.className === 'blackpieces' || target.className === 'blackpieces king') && $(`#${e.target.id}`).children().length <= 0) {
                 $(`#blackpiece${blackPiece[1]}`).detach().appendTo(`#${e.target.id}`)
                 turnCounter(blackPiece[1], e.target.id)
-                redCaptured(targetId, e.target.id)
+                if (target.className === 'blackpieces king') {
+                    redKingCaptured(targetId, e.target.id)
+                } else {
+                    redCaptured(targetId, e.target.id)
+                }
+                if (e.target.id == 2 || e.target.id == 4 || e.target.id == 6 || e.target.id == 8) {
+                    $(`#blackpiece${blackPiece[1]}`).attr('src','Pictures/blackKing.png')
+                    $(`#blackpiece${blackPiece[1]}`).attr('class','blackpieces king')
+                }
                 //changeTurnOrDeclareWinner(redCaptives)
                 $(`.black`).off('click')
                 
-            } else if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && target.className === 'redpieces' && $(`#${e.target.id}`).children().length <= 0) {
+            } else if ($(`#${e.target.id}`).css("background-color") === "rgba(0, 0, 0, 0.5)" && (target.className === 'redpieces' || target.className === 'redpieces king') && $(`#${e.target.id}`).children().length <= 0) {
                 $(`#redpiece${redPiece[1]}`).detach().appendTo(`#${e.target.id}`)
                 turnCounter(redPiece[1], e.target.id)
-                blackCaptured(targetId, e.target.id)
+                if (target.className === 'redpieces king') {
+                    blackKingCaptured(targetId, e.target.id)
+                } else {
+                    blackCaptured(targetId, e.target.id)
+                }
+                if (e.target.id == 57 || e.target.id == 59 || e.target.id == 61 || e.target.id == 63) {
+                    $(`#redpiece${redPiece[1]}`).attr('src','Pictures/redKing.png')
+                    $(`#redpiece${redPiece[1]}`).attr('class','redpieces king')
+                }
                 //changeTurnOrDeclareWinner(blackCaptives)
                 $(`.black`).off('click')
             }
@@ -148,22 +180,76 @@ $(document).ready(function () {
             $('.blackpieces').css('pointer-events', 'none')
         }
     }
-    function redCaptured(target, piece) {
+    function redKingCaptured (target, piece) {
+        let jump = Number(target) - Number(piece)
+        
+        if (jump === -14) {
+            $(`#${Number(piece) - dPad[0]}`).empty()
+            blackCaptives++
+            redPieces--
+        }
+        if (jump === 14) {
+            $(`#${Number(piece) + dPad[0]}`).empty()
+            blackCaptives++
+            redPieces--
+        }
+        if (jump === 18) {
+            $(`#${Number(piece) + dPad[1]}`).empty()
+            blackCaptives++
+            redPieces--
+        }
+        if (jump === -18) {
+            $(`#${Number(piece) - dPad[1]}`).empty()
+            blackCaptives++
+            redPieces--
+        }
+        $('#blackside').text(`${blackCaptives}`)
+        changeTurnOrDeclareWinner(blackCaptives)
+    }
+    function blackKingCaptured (target, piece) {
+        let jump = Number(target) - Number(piece)
+        if (jump === -14) {
+            $(`#${Number(piece) + dPad[0]}`).empty()
+            redCaptives++
+            blackPieces--
+        }
+        if (jump === 14) {
+            $(`#${Number(piece) - dPad[0]}`).empty()
+            redCaptives++
+            blackPieces--
+        }
+        if (jump === 18) {
+            $(`#${Number(piece) - dPad[1]}`).empty()
+            redCaptives++
+            blackPieces--
+        }
+        if (jump === -18) {
+            $(`#${Number(piece) + dPad[1]}`).empty()
+            redCaptives++
+            blackPieces--
+        }
+        $('#redside').text(`${redCaptives}`)
+        changeTurnOrDeclareWinner(redCaptives)
+
+    }
+    function redCaptured(target, piece, test) {
+       
         let tNum = Number(piece)
         let num = Number(target)
         jump = Math.abs(num - tNum)
+ 
 
         if (jump === 14) {
-            $(`#${tNum + blackUpRight}`).empty()
+            $(`#${tNum + dPad[0]}`).empty()
             blackCaptives++
             redPieces--
-            console.log(redPieces, "score")
+       
         }
         if (jump === 18) {
-            $(`#${tNum + blackUpLeft}`).empty()
+            $(`#${tNum + dPad[1]}`).empty()
             blackCaptives++
             redPieces--
-            console.log(redPieces, "score")
+
         }
         $('#blackside').text(`${blackCaptives}`)
         changeTurnOrDeclareWinner(blackCaptives)
@@ -174,16 +260,16 @@ $(document).ready(function () {
         jump = Math.abs(num - tNum)
 
         if (jump === 18) {
-            $(`#${tNum - redDownRight}`).empty()
+            $(`#${tNum - dPad[1]}`).empty()
             redCaptives++
             blackPieces--
-            console.log(blackPieces, "score")
+         
         }
         if (jump === 14) {
-            $(`#${tNum - redDownLeft}`).empty()
+            $(`#${tNum - dPad[0]}`).empty()
             redCaptives++
             blackPieces--
-            console.log(blackPieces, "score")
+            
         }
         $('#redside').text(`${redCaptives}`)
         changeTurnOrDeclareWinner(redCaptives)   
@@ -194,12 +280,11 @@ $(document).ready(function () {
     }
 
     $('#checkersBoard').on('click', function (e) {
+       
         gamePlay(e.target.parentElement.id, e.target)
         // changeTurn()
 
     })
 
-    function get_score() {
-        return blackPieces - redPieces
-    }
+
 })
